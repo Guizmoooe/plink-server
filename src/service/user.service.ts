@@ -2,6 +2,23 @@ import { FilterQuery } from "mongoose";
 import { omit } from "lodash";
 import UserModel, { UserDocument, UserInput } from "../model/user.model";
 
+export async function getUsers() {
+  try {
+    const users = await UserModel.find();
+    return users;
+  } catch (error: any) {
+    throw new Error("Error while fetching users");
+  }
+}
+
+export async function getUser(id: string) {
+  try {
+    const user = await UserModel.findById(id);
+    return user;
+  } catch (error: any) {
+    throw new Error("Error while fetching users");
+  }
+}
 export async function createUser(input: UserInput) {
   try {
     const user = await UserModel.create(input);
