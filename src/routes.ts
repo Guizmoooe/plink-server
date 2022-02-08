@@ -1,11 +1,18 @@
 import { Express, Request, Response } from "express";
 import {
+  createUserSessionHandler,
+  getUserSessionHandler,
+} from "./controller/session.controller";
+import {
   createUserHandler,
   getUsersHandler,
 } from "./controller/user.controller";
 import validate from "./middleware/validateResouce";
 import { createUserSchema } from "./schema/user.schema";
+import { createSessionSchema } from "./schema/session.schema";
+
 export default function routes(app: Express) {
+  // USERS
   /**
    * @Route GET /api/users
    * @Description Get all users
@@ -24,10 +31,10 @@ export default function routes(app: Express) {
    * @Response {404} User not found
    * @Response {500} Internal server error
    */
-  app.get("/api/users/:id", (req: Request, res: Response) => { 
+  app.get("/api/users/:id", (req: Request, res: Response) => {
     getUsersHandler(req, res);
-   });
-   
+  });
+
   /**
    * @Route POST /api/users
    * @Description Create a new user
@@ -38,4 +45,12 @@ export default function routes(app: Express) {
    * @BodyParam passwordConfirmation string required
    */
   app.post("/api/users", validate(createUserSchema), createUserHandler);
+
+  // SESSIONS
+  app.get("/api/sessions", getUserSessionHandler);
+  app.post(
+    "/api/sessions",
+    validate(createSessionSchema),
+    createUserSessionHandler
+  );
 }

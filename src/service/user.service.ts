@@ -31,7 +31,7 @@ export async function createUser(input: UserInput) {
 
 export async function validatePassword({
   email,
-  password,
+  password
 }: {
   email: string;
   password: string;
